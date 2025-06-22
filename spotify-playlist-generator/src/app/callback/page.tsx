@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 
-export default function Callback() {
+function CallbackContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -39,9 +39,16 @@ export default function Callback() {
     }
   }, [searchParams, router]);
 
+  return null;
+}
+
+export default function Callback() {
   return (
-    <div className="flex items-center justify-center h-screen">
-      <p>Logging you in...</p>
-    </div>
+    <Suspense>
+      <div className="flex items-center justify-center h-screen">
+        <p>Logging you in...</p>
+      </div>
+      <CallbackContent />
+    </Suspense>
   );
 } 
