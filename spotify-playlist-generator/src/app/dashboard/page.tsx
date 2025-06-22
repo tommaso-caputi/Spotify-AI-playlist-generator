@@ -1,6 +1,6 @@
 'use client';
 
-import Playlists from '../components/Playlists';
+import Playlists from '../../components/Playlists';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 

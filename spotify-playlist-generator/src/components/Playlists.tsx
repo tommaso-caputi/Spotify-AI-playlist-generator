@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getPlaylists } from '../../utils/spotify';
+import { getPlaylists } from '../utils/spotify';
 
 interface Playlist {
   id: string;
