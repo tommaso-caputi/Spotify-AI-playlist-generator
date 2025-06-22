@@ -1,30 +1,28 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import Playlists from './components/Playlists';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem('spotify_access_token');
-    if (token) {
-      setIsLoggedIn(true);
+    const expiresAt = localStorage.getItem('spotify_token_expires_at');
+    if (token && expiresAt) {
+      if (new Date().getTime() < parseInt(expiresAt)) {
+        router.push('/dashboard');
+      } else {
+        localStorage.removeItem('spotify_access_token');
+        localStorage.removeItem('spotify_refresh_token');
+        localStorage.removeItem('spotify_token_expires_at');
+      }
     }
-  }, []);
+  }, [router]);
 
   const handleLogin = () => {
     window.location.href = '/api/auth/login';
   };
-
-  if (isLoggedIn) {
-    return (
-      <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Your Playlists</h1>
-        <Playlists />
-      </div>
-    );
-  }
 
   return (
     <div className="flex items-center justify-center h-screen">

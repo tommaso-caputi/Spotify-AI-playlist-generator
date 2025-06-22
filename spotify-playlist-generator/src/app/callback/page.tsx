@@ -27,10 +27,12 @@ function CallbackContent() {
       })
         .then(res => res.json())
         .then(data => {
-          if (data.access_token) {
+          if (data.access_token && data.expires_in) {
             localStorage.setItem('spotify_access_token', data.access_token);
             localStorage.setItem('spotify_refresh_token', data.refresh_token);
-            router.push('/');
+            const expiresAt = new Date().getTime() + data.expires_in * 1000;
+            localStorage.setItem('spotify_token_expires_at', expiresAt.toString());
+            router.push('/dashboard');
           } else {
             console.error('Failed to get access token');
             router.push('/');
